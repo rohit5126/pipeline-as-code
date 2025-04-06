@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    environment {
+         name = 'rohit'
+    } 
+    parameters {
+         string(name: 'person', defaultValue: 'diksha', description: "who are you?")
+         booleanParam(name: 'isMale', defaultValue: true, description: "")
+         choice(name: 'city', choices: ['tata', 'ranchi', 'pune'], description: "")
+    }
+    stages {
+        stage('test') {
+            steps {
+                sh 'date'
+                sh 'pwd'
+                echo 'testing'
+            }
+        }
+        stage('continue ?') {
+            steps {
+                input(message: 'should we continue', ok: 'yes we should')
+            }
+         }
+        
+        stage('Build') {
+            environment {
+            name1 = 'aryan'
+            } 
+            steps {
+                sh '''
+                echo "$name1"
+                date
+                echo 'code build'
+                
+                '''
+                
+             }
+        }
+        stage('environment variabe') {
+            steps {
+                sh '''
+                echo "${BUILD_ID}"
+                echo "$name"
+                echo "$name1"
+                ls
+                '''
+             }
+        }
+        stage('parameters from') {
+            steps {
+                sh '''
+                echo "$person"
+                echo "$isMale"
+                echo "$city"
+                '''
+             }
+        }
+    }
+    post {
+       always {
+           echo 'i will say hello'
+       }
+       failure {
+           echo 'fail'
+       }
+       success {
+           echo 'pass'
+       }
+    }
+}
